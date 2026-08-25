@@ -36,7 +36,7 @@ from pathlib import Path
 import numpy as np
 
 from ..config import load_config
-from ..features import N_FEATURES, WINDOW, extract_window
+from ..features import WINDOW, extract_window
 
 FEATURE_VERSION = 3  # bump whenever features.py changes shape or semantics
 

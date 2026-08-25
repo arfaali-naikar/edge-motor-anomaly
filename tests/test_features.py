@@ -25,7 +25,7 @@ def test_time_features_on_known_signal():
     fs = 3200
     t = np.arange(fs) / fs
     x = np.sin(2 * np.pi * 50 * t)
-    rms, peak, crest, kurt, skew, zcr = _time_features(x)
+    rms, peak, crest, kurt, skew, _zcr = _time_features(x)
     assert rms == pytest.approx(1 / np.sqrt(2), abs=0.01)
     assert peak == pytest.approx(1.0, abs=0.01)
     assert crest == pytest.approx(np.sqrt(2), abs=0.02)

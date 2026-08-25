@@ -107,7 +107,7 @@ def main(argv=None) -> int:
         return 1
 
     key = partition_key(cfg["cloud"]["prefix"], args.device_id, records)
-    n, size = upload(records, cfg["cloud"]["bucket"], key, cfg["cloud"]["region"], args.commit)
+    n, _size = upload(records, cfg["cloud"]["bucket"], key, cfg["cloud"]["region"], args.commit)
 
     if args.commit and not args.keep:
         # Truncate only after a confirmed put. Losing telemetry is annoying;

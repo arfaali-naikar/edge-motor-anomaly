@@ -23,7 +23,6 @@ import time
 from pathlib import Path
 
 import numpy as np
-import tensorflow as tf
 from tensorflow import keras
 
 from .config import load_config

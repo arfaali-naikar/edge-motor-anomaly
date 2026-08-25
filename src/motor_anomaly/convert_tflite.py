@@ -59,7 +59,7 @@ def build_representative_set(
     rng = np.random.default_rng(seed)
     if fault_frac <= 0 or len(fault) == 0:
         return healthy.astype(np.float32)
-    k = min(len(fault), int(round(len(healthy) * fault_frac / (1.0 - fault_frac))))
+    k = min(len(fault), round(len(healthy) * fault_frac / (1.0 - fault_frac)))
     picked = fault[rng.choice(len(fault), size=k, replace=False)]
     return np.concatenate([healthy, picked]).astype(np.float32)
 

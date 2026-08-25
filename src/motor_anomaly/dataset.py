@@ -33,7 +33,7 @@ class Scaler:
     scale: np.ndarray
 
     @classmethod
-    def fit(cls, x: np.ndarray) -> "Scaler":
+    def fit(cls, x: np.ndarray) -> Scaler:
         mean = x.mean(axis=0)
         scale = x.std(axis=0)
         # A constant feature would divide by zero. Clamp rather than drop the
@@ -48,7 +48,7 @@ class Scaler:
         return {"mean": self.mean.tolist(), "scale": self.scale.tolist()}
 
     @classmethod
-    def from_dict(cls, d: dict) -> "Scaler":
+    def from_dict(cls, d: dict) -> Scaler:
         return cls(np.asarray(d["mean"], np.float32), np.asarray(d["scale"], np.float32))
 
 
@@ -74,10 +74,10 @@ def split_segments(
         by_fault.setdefault(seg["fault"], []).append(seg)
 
     train, val, test = [], [], []
-    for fault, segs in by_fault.items():
+    for segs in by_fault.values():
         idx = rng.permutation(len(segs))
-        n_test = max(1, int(round(len(segs) * test_frac)))
-        n_val = max(1, int(round(len(segs) * val_frac)))
+        n_test = max(1, round(len(segs) * test_frac))
+        n_val = max(1, round(len(segs) * val_frac))
         for j, i in enumerate(idx):
             if j < n_test:
                 test.append(segs[i])

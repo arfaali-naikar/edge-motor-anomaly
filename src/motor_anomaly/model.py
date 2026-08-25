@@ -68,7 +68,7 @@ def compile_model(model: keras.Model, lr: float = 1e-3) -> keras.Model:
     return model
 
 
-def reconstruction_error(model_or_fn, x, batch_size: int = 512) -> "tf.Tensor":
+def reconstruction_error(model_or_fn, x, batch_size: int = 512) -> tf.Tensor:
     """Per-sample MSE. This is the anomaly score, full stop -- everything
     downstream (threshold, debounce, alarm) is a function of this number."""
     if hasattr(model_or_fn, "predict"):
