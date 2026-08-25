@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Artifacts are reproducible from `make all` -- keeping binaries in git makes
+# every diff unreadable and the repo balloons. The exception is the generated
+# firmware header, which is tracked so the sketch compiles from a fresh clone.
+artifacts/*
+!artifacts/.gitkeep
+data/*
+!data/.gitkeep
+
+*.tflite
+*.keras
+*.npz
+spool.jsonl
+
+.aws/
+*.tfstate
+*.tfstate.*
+.terraform/
+
+.DS_Store
+.vscode/*
+!.vscode/settings.json

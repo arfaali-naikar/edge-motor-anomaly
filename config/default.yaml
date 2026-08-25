@@ -1,0 +1,35 @@
+# Tuned against the simulated rig. If you swap in real accelerometer data,
+# fs and nominal_rpm are the two you must change first -- everything in
+# features.py is derived from them.
+seed: 7
+
+data:
+  fs: 3200            # Hz, LSM9DS1 max usable ODR for the accelerometer
+  nominal_rpm: 1455.0 # 4-pole, 50 Hz, ~3% slip
+  duration_s: 4.0
+  n_healthy: 220
+  n_per_fault: 45
+
+model:
+  latent_dim: 8       # 8 was the knee. 4 underfits, 16 starts reconstructing faults too well.
+  hidden: [32, 16]
+  dropout: 0.05
+  l2: 0.00001
+
+train:
+  epochs: 120
+  batch_size: 64
+  lr: 0.001
+  patience: 15
+  target_fpr: 0.01    # 1% per-window false alarm before debounce
+
+edge:
+  debounce_n: 3       # raise the alarm on N anomalous windows
+  debounce_m: 5       # out of the last M
+  spool_path: artifacts/spool.jsonl
+
+cloud:
+  bucket: CHANGEME-motor-anomaly
+  prefix: raw
+  region: eu-west-2
+  role_arn: ""        # SageMaker execution role, filled in by terraform output

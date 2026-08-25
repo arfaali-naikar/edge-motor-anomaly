@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt ruff
+      - run: ruff check src tests
+      - run: PYTHONPATH=src python -m pytest tests -q
+
+  pipeline:
+    # Full train->quantize on every push would be slow, so this is a smoke run
+    # with a tiny dataset. It exists to catch "the converter broke", not to
+    # check accuracy.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: |
+          PYTHONPATH=src python -m motor_anomaly.train --epochs 5 --seed 1
+          PYTHONPATH=src python -m motor_anomaly.evaluate
+          PYTHONPATH=src python -m motor_anomaly.convert_tflite
